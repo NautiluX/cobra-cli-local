@@ -85,6 +85,7 @@ func initializeProject(args []string) (string, error) {
 		Copyright:    copyrightLine(),
 		Viper:        viper.GetBool("useViper"),
 		AppName:      path.Base(modName),
+		LocalVars:    localVars,
 	}
 
 	if err := project.Create(); err != nil {

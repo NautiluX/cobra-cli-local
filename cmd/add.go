@@ -68,6 +68,7 @@ Example: cobra-cli add server -> resulting in a new cmd/server.go`,
 					AbsolutePath: wd,
 					Legal:        getLicense(),
 					Copyright:    copyrightLine(),
+					LocalVars:    localVars,
 				},
 			}
 

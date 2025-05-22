@@ -19,6 +19,7 @@ type Project struct {
 	Legal        License
 	Viper        bool
 	AppName      string
+	LocalVars    bool
 }
 
 type Command struct {
@@ -59,7 +60,11 @@ func (p *Project) Create() error {
 	}
 	defer rootFile.Close()
 
-	rootTemplate := template.Must(template.New("root").Parse(string(tpl.RootTemplate())))
+	tmpl := tpl.RootTemplateGlobal()
+	if p.LocalVars {
+		tmpl = tpl.RootTemplateLocal()
+	}
+	rootTemplate := template.Must(template.New("root").Parse(string(tmpl)))
 	err = rootTemplate.Execute(rootFile, p)
 	if err != nil {
 		return err
@@ -107,7 +112,11 @@ func (c *Command) Create() error {
 		"title": strings.Title,
 	}
 
-	commandTemplate := template.Must(template.New("sub").Funcs(funcMap).Parse(string(tpl.AddCommandTemplate())))
+	tmpl := tpl.AddCommandTemplateGlobal()
+	if c.LocalVars {
+		tmpl = tpl.AddCommandTemplateLocal()
+	}
+	commandTemplate := template.Must(template.New("sub").Funcs(funcMap).Parse(string(tmpl)))
 	err = commandTemplate.Execute(cmdFile, c)
 	if err != nil {
 		return err
