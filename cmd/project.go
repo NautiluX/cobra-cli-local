@@ -91,7 +91,7 @@ func (p *Project) createLicenseFile() error {
 func (c *Command) Create() error {
 	filename := c.CmdName
 	if c.CmdParent != "rootCmd" {
-		filename = fmt.Sprintf("%s-%s", strings.TrimSuffix(c.CmdParent, "Cmd"), c.CmdName)
+		filename = fmt.Sprintf("%s_%s", strings.TrimSuffix(c.CmdParent, "Cmd"), c.CmdName)
 	}
 	cmdFile, err := os.Create(fmt.Sprintf("%s/cmd/%s.go", c.AbsolutePath, filename))
 	if err != nil {

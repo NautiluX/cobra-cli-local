@@ -1,8 +1,9 @@
+{{ if or ( ne .Project.Copyright "" ) .Legal.Header }}
 /*
 {{ .Project.Copyright }}
 {{ if .Legal.Header }}{{ .Legal.Header }}{{ end }}
 */
-package cmd
+{{ end }}package cmd
 
 import (
 	"fmt"

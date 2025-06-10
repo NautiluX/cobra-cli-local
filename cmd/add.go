@@ -22,9 +22,10 @@ import (
 )
 
 var (
-	packageName string
-	parentName  string
-	dirName     string
+	packageName      string
+	parentName       string
+	dirName          string
+	addCopyrightLine bool
 
 	addCmd = &cobra.Command{
 		Use:     "add [command name]",
@@ -67,9 +68,11 @@ Example: cobra-cli add server -> resulting in a new cmd/server.go`,
 				Project: &Project{
 					AbsolutePath: wd,
 					Legal:        getLicense(),
-					Copyright:    copyrightLine(),
 					LocalVars:    localVars,
 				},
+			}
+			if addCopyrightLine {
+				command.Copyright = copyrightLine()
 			}
 
 			cobra.CheckErr(command.Create())
@@ -83,6 +86,7 @@ func init() {
 	addCmd.Flags().StringVarP(&packageName, "package", "t", "", "target package name (e.g. github.com/spf13/hugo)")
 	addCmd.Flags().StringVarP(&parentName, "parent", "p", "rootCmd", "variable name of parent command for this command")
 	addCmd.Flags().StringVarP(&dirName, "dir", "d", "", "relative path to the command's main package")
+	addCmd.Flags().BoolVarP(&addCopyrightLine, "copyright", "c", true, "add copyright line to generated command file")
 	cobra.CheckErr(addCmd.Flags().MarkDeprecated("package", "this operation has been removed."))
 }
 
